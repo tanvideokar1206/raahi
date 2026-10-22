@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Explorer - Culture & Heritage</title>
+    <style>
+        :root {
+            --primary: #ff5722;
+            --accent: #ffb74d;
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #f5f5f5;
+            --text-muted: #aaa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #d84315, #ff5722);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--card-bg);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid #333;
+        }
+
+        .search-bar:focus {
+            outline: 2px solid var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: 1px solid #2a2a2a;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.2);
+        }
+
+        .card-header {
+            background: linear-gradient(45deg, #1e1e1e, #2c2c2c);
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .card-header h3 {
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .card-header span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-body p {
+            font-size: 0.95rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: rgba(255, 87, 34, 0.15);
+            color: var(--primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.4rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid #222;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🇮🇳 Bharat Explorer</h1>
+        <p>Discover the Rich Culture, Heritage & Iconic Places of India</p>
+    </header>
+
+    <div class="container">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search by state, monument, or festival..." onkeyup="filterPlaces()">
+
+        <div class="grid" id="placesGrid">
+            <!-- Cards populated dynamically by JavaScript -->
+        </div>
+    </div>
+
+    <footer>
+        <p>BCA Academic Project • Created for Educational Purposes</p>
+    </footer>
+
+    <script>
+        const culturalData = [
+            {
+                state: "Rajasthan",
+                title: "Land of Kings & Heritage",
+                history: "Famous for its royal forts, vibrant folk music (Ghoomar), and colorful block-printed textiles.",
+                specialty: "Jaipur Block Print, Bandhani, Mojris",
+                place: "Amer Fort, Jaipur"
+            },
+            {
+                state: "Kerala",
+                title: "God's Own Country",
+                history: "Known for Kathakali classical dance, serene backwaters, ancient Ayurveda, and traditional spice trade.",
+                specialty: "Kasavu Saree, Handloom Textiles, Spices",
+                place: "Alleppey Backwaters"
+            },
+            {
+                state: "Punjab",
+                title: "Heart of Bhangra & Hospitality",
+                history: "Rich agricultural heritage, vibrant Bhangra dance, and historical spiritual centers.",
+                specialty: "Phulkari Embroidery, Patiala Salwar",
+                place: "Golden Temple, Amritsar"
+            },
+            {
+                state: "West Bengal",
+                title: "Cultural Capital of India",
+                history: "Renowned for literary traditions, Durga Puja festivals, classical music, and colonial architecture.",
+                specialty: "Baluchari Saree, Terracotta Crafts",
+                place: "Victoria Memorial, Kolkata"
+            },
+            {
+                state: "Maharashtra",
+                title: "Land of Forts & Festivities",
+                history: "Home to the Maratha Empire, Ajanta-Ellora caves, and grand Ganesh Chaturthi celebrations.",
+                specialty: "Paithani Sarees, Kolhapuri Chappals",
+                place: "Ajanta & Ellora Caves, Chhatrapati Shivaji Maharaj Terminus"
+            },
+            {
+                state: "Tamil Nadu",
+                title: "Cradle of Dravidian Culture",
+                history: "Famous for thousand-year-old Chola temples, Bharatanatyam dance, and rich Carnatic music traditions.",
+                specialty: "Kanchipuram Silk Sarees, Tanjore Paintings",
+                place: "Meenakshi Temple, Madurai"
+            }
+        ];
+
+        function renderCards(data) {
+            const grid = document.getElementById('placesGrid');
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: var(--text-muted);">No cultural items found matching your search.</p>';
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span>${item.state}</span>
+                        <h3>${item.title}</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Culture & History:</strong> ${item.history}</p>
+                        <p><strong>Iconic Destination:</strong> ${item.place}</p>
+                        <div style="margin-top: 1rem;">
+                            <span class="tag">${item.specialty}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterPlaces() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = culturalData.filter(item => 
+                item.state.toLowerCase().includes(query) ||
+                item.title.toLowerCase().includes(query) ||
+                item.history.toLowerCase().includes(query) ||
+                item.place.toLowerCase().includes(query) ||
+                item.specialty.toLowerCase().includes(query)
+            );
+            renderCards(filtered);
+        }
+
+        // Initial render on page load
+        renderCards(culturalData);
+    </script>
+</body>
+</html>
